@@ -29,11 +29,9 @@ for subject_name, df in sheets.items():
         ("regressor", XGBRegressor(n_estimators=100, max_depth=3, learning_rate=0.1, random_state=42))
     ])
 
-    # 학습
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
     model.fit(X_train, y_train)
 
-    # 저장
     file_name = f"dua_xgb_model_{subject_name.replace(' ', '_').lower()}.pkl"
     joblib.dump(model, file_name)
     print(f"✅ Saved model: {file_name}")
