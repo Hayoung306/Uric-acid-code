@@ -5,16 +5,12 @@ import matplotlib.pyplot as plt
 import joblib
 from datetime import datetime, timedelta
 
-# ======================
-# 📌 Load Model
-# ======================
+
 @st.cache_resource
 def load_model():
     return joblib.load("dua_xgb_model_subject_5.pkl")
 
-# ======================
-# 🎯 Streamlit UI
-# ======================
+
 st.title("Tear Uric Acid Predictor (Event Chaining with Saturation Decay)")
 st.write("Each event starts from the last event's final UA. Inside each, UA = start_UA + ΔUA(t), with saturation control.")
 
@@ -46,9 +42,7 @@ for i in range(num_events):
         "detail": detail
     })
 
-# ======================
-# 🚀 Prediction
-# ======================
+
 if st.button("Predict"):
     model = load_model()
     interval = 5
@@ -93,9 +87,7 @@ if st.button("Predict"):
 
     df = pd.DataFrame(timeline).drop_duplicates(subset="Clock").sort_values("Clock")
 
-    # ======================
-    # 📈 Visualization
-    # ======================
+
     st.subheader("📈 Tear Uric Acid Over Time")
     fig, ax = plt.subplots(figsize=(12, 4))
     ax.plot(df["Clock"], df["Predicted UA (μM)"], marker='o')
@@ -107,9 +99,7 @@ if st.button("Predict"):
     ax.grid(True)
     st.pyplot(fig)
 
-    # ======================
-    # 💾 CSV Export
-    # ======================
+
     st.subheader("Download Prediction Data")
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button("Download as CSV", csv, "predicted_tear_ua.csv", "text/csv")
